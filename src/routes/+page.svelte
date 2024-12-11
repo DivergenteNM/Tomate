@@ -106,7 +106,7 @@
 		darkMode = !darkMode;
 				if (darkMode) {
 			document.documentElement.classList.add('dark');
-			document.documentElement.style.setProperty('--header-bg-color', '#1a1a1a'); // Color mate oscuro
+			document.documentElement.style.setProperty('--header-bg-color', '#3E350E'); // Color mate oscuro
 			document.documentElement.style.setProperty('--header-text-color', '#e0e0e0'); // Color mate claro
 		} else {
 			document.documentElement.classList.remove('dark'); 
@@ -116,66 +116,73 @@
 	}
 </script>
 
-<div class={`chat-container min-h-screen pb-32 ${darkMode ? 'dark bg-gray-800' : 'bg-gray-50'}`}>
-		<div class="max-w-4xl mx-auto px-4 pt-8 space-y-6">
-		{#each registroChat as registro}
-			<div class="text-4xl" in:fly="{{ y: 20, duration: 800 }}" out:fade="{{ duration: 600 }}">
-				<Message modo={registro.modo} {darkMode}>
-					{registro.mensaje}
-				</Message>
-			</div>
-		{/each}
-		{#if ocupado}
-			<div class="flex justify-center items-center py-4" in:fade="{{ duration: 600 }}">
-				<div class="loader"></div>
-			</div>
-		{/if}
-	</div>
+
+<div class="flex min-h-screen">
+    <!-- Columna lateral para las preguntas -->
+    <div class={`w-1/4 fixed left-0 top-0 h-full ${darkMode ? 'bg-green-900 border-gray-700' : 'bg-white border-gray-200'} border-r px-4 py-4 md:py-6`} style="padding-top: 200px; margin-top:50px;">
+        <div class="max-w-xs mx-auto">
+            <div class={`flex flex-col items-start rounded-lg border ${darkMode ? 'bg-green-700 border-black' : 'bg-white border-gray-800'} focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500`}>
+                <input
+                    class={`w-full px-4 py-2 bg-transparent outline-none ${darkMode ? 'text-white placeholder-gray-800' : 'text-white placeholder-gray-800'}`}
+                    type="text"
+                    placeholder="Escoge una opción..."
+                    disabled={ocupado}
+                    bind:value={respuesta}
+                    on:keydown={(e) => e.key === 'Enter' && !e.shiftKey && enviarRespuesta()}
+                    use:popup={popupSettings}
+                />
+                <button
+                    class={`p-2 ${darkMode ? 'text-black hover:text-gray-200' : 'text-gray-400 hover:text-gray-600'} focus:outline-none`}
+                    disabled={ocupado}
+                    on:click={enviarRespuesta}
+                >
+                    <Send size={20} />
+                </button>
+                <button
+                    class={`p-2 ${darkMode ? 'text-black hover:text-gray-200' : 'text-gray-400 hover:text-gray-600'} focus:outline-none`}
+                    disabled={ocupado}
+                    on:click={nuevaSesion}
+                >
+                    <Trash size={20} />
+                </button>
+                <button
+                    class={`p-2 ${darkMode ? 'text-black hover:text-gray-200' : 'text-gray-400 hover:text-gray-600'} focus:outline-none`}
+                    on:click={toggleDarkMode}
+                >
+                    {#if darkMode}
+                        <Sun size={20} />
+                    {:else}
+                        <Moon size={20} />
+                    {/if}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Columna principal para el chat -->
+    <div class={`chat-container flex-1 min-h-screen pt-32 pb-32 ${darkMode ? 'dark bg-blue-800' : 'bg-gray-50'}`} style="margin-left: 25%;">
+        <div class="max-w-4xl mx-auto px-4 pt-8 space-y-6">
+            {#each registroChat as registro}
+                <div class="text-4xl" in:fly="{{ y: 20, duration: 800 }}" out:fade="{{ duration: 600 }}">
+                    <Message modo={registro.modo} {darkMode}>
+                        {registro.mensaje}
+                    </Message>
+                </div>
+            {/each}
+            {#if ocupado}
+                <div class="flex justify-center items-center py-4" in:fade="{{ duration: 600 }}">
+                    <div class="loader"></div>
+                </div>
+            {/if}
+        </div>
+    </div>
 </div>
 
-<div class={`fixed left-0 bottom-0 w-full ${darkMode ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-200'} border-t px-4 py-4 md:py-6`}>
-	<div class="max-w-4xl mx-auto">
-		<div class={`flex items-center rounded-lg border ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'} focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500`}>
-			<input
-				class={`flex-grow px-4 py-2 bg-transparent outline-none ${darkMode ? 'text-white placeholder-gray-400' : 'text-gray-900 placeholder-gray-500'}`}
-				type="text"
-				placeholder="Type your message..."
-				disabled={ocupado}
-				bind:value={respuesta}
-				on:keydown={(e) => e.key === 'Enter' && !e.shiftKey && enviarRespuesta()}
-				use:popup={popupSettings}
-			/>
-			<button
-				class={`p-2 ${darkMode ? 'text-gray-400 hover:text-gray-200' : 'text-gray-400 hover:text-gray-600'} focus:outline-none`}
-				disabled={ocupado}
-				on:click={enviarRespuesta}
-			>
-				<Send size={20} />
-			</button>
-			<button
-				class={`p-2 ${darkMode ? 'text-gray-400 hover:text-gray-200' : 'text-gray-400 hover:text-gray-600'} focus:outline-none`}
-				disabled={ocupado}
-				on:click={nuevaSesion}
-			>
-				<Trash size={20} />
-			</button>
-			<button
-				class={`p-2 ${darkMode ? 'text-gray-400 hover:text-gray-200' : 'text-gray-400 hover:text-gray-600'} focus:outline-none`}
-				on:click={toggleDarkMode}
-			>
-				{#if darkMode}
-					<Sun size={20} />
-				{:else}
-					<Moon size={20} />
-				{/if}
-			</button>
-		</div>
-	</div>
-</div>
+
 
 <div data-popup="popupAutocomplete" class="w-full">
 	<div class="max-w-4xl mx-auto">
-		<div class={`card p-2 mr-4 space-y-2 ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-lg rounded-lg`}>
+		<div class={`card p-2 mr-4 space-y-2 ${darkMode ? 'bg-gray-400' : 'bg-white'} shadow-lg rounded-lg`}>
 			<Autocomplete
 				bind:input={respuesta}
 				options={respuestas}
@@ -198,7 +205,7 @@
 	}
 
 	:global(body.dark) {
-		background-color: #1f2937;
+		background-color: #79792E;
 		color: #f3f4f6;
 	}
 
@@ -231,7 +238,7 @@
 	}
 
 	:global(.dark .message.sistema_pregunta) {
-		background-color: #374151;
+		background-color: #79792E;
 		color: #e5e7eb;
 	}
 

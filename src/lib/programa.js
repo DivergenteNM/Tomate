@@ -6,6 +6,7 @@ export const programa = `
 :- dynamic(rotacion/1). % Información sobre rotación de cultivos.
 :- dynamic(enfermedad/1). % Enfermedad identificada.
 :- dynamic(clima/1). % Condición climática observada.
+:- dynamic(ultima_respuesta/1). % Última respuesta proporcionada por el usuario.
 
 % Paso inicial: Selección de diagnóstico
 regla(Respuesta):- 
@@ -82,7 +83,7 @@ regla(Respuesta):-
 regla(Respuesta):- 
     (paso('Comprobar Sintoma'), sintoma('Hojas amarillentas') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'Posible deficiencia de nutrientes o infestación de mosca blanca. Revisa los nutrientes y busca insectos en el envés de las hojas.'],
+        Respuesta = ['RESPUESTA', 'Este síntoma puede indicar una deficiencia de nutrientes esenciales o una infestación por mosca blanca. Se recomienda realizar un análisis de nutrientes del suelo y observar el envés de las hojas en busca de insectos. Si se confirma la presencia de plagas aplicar un insecticida adecuado.'],
         retractall(paso(_)),
         retractall(sintoma(_))
     ).
@@ -90,7 +91,7 @@ regla(Respuesta):-
 regla(Respuesta):- 
     (paso('Comprobar Sintoma'), sintoma('Manchas negras') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'Posible infección por Alternaria. Aplicar fungicidas específicos.'],
+        Respuesta = ['RESPUESTA', 'Las manchas negras en las hojas podrían ser causadas por una infección por Alternaria un hongo común en cultivos de tomate. Es importante retirar las hojas afectadas y aplicar un fungicida específico para controlar la propagación. Asegúrese de mantener una buena ventilación en el invernadero.'],
         retractall(paso(_)),
         retractall(sintoma(_))
     ).
@@ -98,7 +99,7 @@ regla(Respuesta):-
 regla(Respuesta):- 
     (paso('Comprobar Sintoma'), sintoma('Manchas marrones en hojas') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'Posible infección por hongos. Aplicar fungicidas específicos.'],
+        Respuesta = ['RESPUESTA', 'Las manchas marrones suelen estar asociadas a infecciones fúngicas. Se recomienda utilizar fungicidas adecuados y monitorear las condiciones de humedad ya que los hongos prosperan en ambientes húmedos. Mantener el cultivo seco y bien ventilado puede prevenir futuros brotes.'],
         retractall(paso(_)),
         retractall(sintoma(_))
     ).
@@ -106,7 +107,7 @@ regla(Respuesta):-
 regla(Respuesta):- 
     (paso('Comprobar Sintoma'), sintoma('Tallos quebradizos') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'Posible deficiencia de calcio. Añade suplementos de calcio al suelo.'],
+        Respuesta = ['RESPUESTA', 'Los tallos quebradizos son una señal clara de deficiencia de calcio en las plantas. Considere agregar enmiendas de calcio al suelo como yeso agrícola y asegúrese de que el sistema de riego permita una distribución uniforme de los nutrientes.'],
         retractall(paso(_)),
         retractall(sintoma(_))
     ).
@@ -114,7 +115,8 @@ regla(Respuesta):-
 regla(Respuesta):- 
     (paso('Comprobar Sintoma'), sintoma('Bordes mojados') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'Posible aparición de mildiu. Aplicar fungicidas específicos.'],
+        Respuesta = ['RESPUESTA', 'Este síntoma puede ser indicativo de mildiu una enfermedad causada por hongos que prosperan en condiciones de alta humedad. Es crucial aplicar fungicidas específicos para mildiu y reducir la humedad en el entorno del cultivo mediante una ventilación adecuada.
+'],
         retractall(paso(_)),
         retractall(sintoma(_))
     ).
@@ -131,7 +133,8 @@ regla(Respuesta):-
 regla(Respuesta):- 
     (paso('Comprobar Calidad Agua'), calidad_agua('Mala calidad') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'La mala calidad del agua podría estar afectando la salud de las plantas.'],
+        Respuesta = ['RESPUESTA', 'El agua de mala calidad puede contener sales o minerales en exceso que afectan negativamente a las plantas. Se recomienda realizar un análisis del agua y si es necesario instalar un sistema de filtración o desalinización para mejorar su calidad.
+'],
         retractall(paso(_)),
         retractall(calidad_agua(_))
     ).
@@ -139,7 +142,7 @@ regla(Respuesta):-
 regla(Respuesta):- 
     (paso('Comprobar Calidad Agua'), calidad_agua('Sedimentos') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'Presencia de sedimentos en el agua. Considerar el uso de un filtro.'],
+        Respuesta = ['RESPUESTA', 'La presencia de sedimentos en el agua puede obstruir los sistemas de riego y afectar la salud de las plantas. Considere instalar filtros en el sistema de riego para eliminar estas partículas y garantizar un flujo limpio de agua.'],
         retractall(paso(_)),
         retractall(calidad_agua(_))
     ).
@@ -148,7 +151,7 @@ regla(Respuesta):-
 regla(Respuesta):- 
     (paso('Comprobar Calidad Agua'), calidad_agua('Contaminada') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'El agua contaminada puede ser perjudicial para las plantas, considere un sistema de purificación.'],
+        Respuesta = ['RESPUESTA', 'El uso de agua contaminada puede introducir patógenos o químicos dañinos al cultivo. Se recomienda tratar el agua con un sistema de purificación como filtros de carbono o luz ultravioleta antes de utilizarla para el riego.'],
         retractall(paso(_)),
         retractall(calidad_agua(_))
     ).
@@ -166,7 +169,7 @@ regla(Respuesta):-
 regla(Respuesta):- 
     (paso('Comprobar Rotacion'), rotacion('Mejora del suelo') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'La rotación de cultivos mejora la salud del suelo y las plantas.'],
+        Respuesta = ['RESPUESTA', 'La rotación de cultivos puede mejorar significativamente la calidad del suelo al reducir la acumulación de patógenos y plagas específicas de un cultivo en particular. Además al alternar cultivos con diferentes necesidades nutricionales se puede mantener un equilibrio de nutrientes en el suelo. Considere incluir cultivos fijadores de nitrógeno como leguminosas para enriquecer el suelo naturalmente.'],
         retractall(paso(_)),
         retractall(rotacion(_))
     ).
@@ -174,7 +177,7 @@ regla(Respuesta):-
 regla(Respuesta):- 
     (paso('Comprobar Rotacion'), rotacion('Descanso del invernadero') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'El descanso del invernadero permite regenerar el suelo.'],
+        Respuesta = ['RESPUESTA', 'Permitir un período de descanso para el invernadero ayuda a interrumpir el ciclo de vida de plagas y enfermedades específicas. Durante este tiempo se recomienda limpiar profundamente el área eliminar restos de plantas y esterilizar herramientas y estructuras para reducir riesgos futuros. También puede considerar cubrir el suelo con mantas plásticas para realizar un proceso de solarización que ayuda a eliminar organismos patógenos en el suelo.'],
         retractall(paso(_)),
         retractall(rotacion(_))
     ).
@@ -190,23 +193,28 @@ regla(Respuesta):-
 regla(Respuesta):- 
     (paso('Comprobar Plaga'), plaga('Capa pegajosa') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'Posible infestación de mosca blanca. Revisa el envés de las hojas.'],
+        Respuesta = ['RESPUESTA', 'Una capa pegajosa en las hojas puede ser un signo de la presencia de áfidos (pulgones) que secretan una sustancia llamada melaza. Esta melaza puede propiciar el crecimiento de hongos como la fumagina. Se recomienda utilizar jabón potásico o aceite de neem para controlar los áfidos de forma efectiva.'],
         retractall(paso(_)),
         retractall(plaga(_))
     ).
+% Predicado para almacenar la última respuesta del usuario
+registra_respuesta(Respuesta):- 
+    retractall(ultima_respuesta(_)),
+    assertz(ultima_respuesta(Respuesta)).
 
 regla(Respuesta):- 
     (paso('Comprobar Plaga'), plaga('Bichitos verdes') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'Posible infestación de pulgones. ', 'Elige una opción: Más información o Sugerencias para tratar.'],
+        Respuesta = ['RESPUESTA', 'Una capa pegajosa en las hojas puede ser un signo de la presencia de áfidos (pulgones) que secretan una sustancia llamada melaza. Esta melaza puede propiciar el crecimiento de hongos como la fumagina. Se recomienda utilizar jabón potásico o aceite de neem para controlar los áfidos de forma efectiva.'],
         retractall(paso(_)),
-        assertz(paso('Elegir Opción'))
+        retractall(plaga(_))
     ).
 
 regla(Respuesta):- 
     (paso('Elegir Opción') -> 
         !, 
         Respuesta = ['PREGUNTA', '¿Qué deseas saber?', 'Más información', 'Sugerencias para tratar.'],
+        registra_respuesta(Respuesta),
         retractall(paso(_)),
         assertz(paso('Procesar Opción'))
     ).
@@ -229,16 +237,14 @@ regla(Respuesta):-
         retractall(ultima_respuesta(_))
     ).
 
-% Predicado para almacenar la última respuesta del usuario
-registra_respuesta(Respuesta):- 
-    retractall(ultima_respuesta(_)),
-    assertz(ultima_respuesta(Respuesta)).
+
+
 
 
 regla(Respuesta):- 
     (paso('Comprobar Plaga'), plaga('Trips') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'Posible infestación de trips. Revisa el envés de las hojas.'],
+        Respuesta = ['RESPUESTA', 'Los trips son insectos diminutos que se alimentan perforando las células de las hojas causando decoloración y puntos plateados. Se recomienda usar trampas adhesivas de color azul para monitorearlos y aplicar insecticidas específicos si la infestación es severa.'],
         retractall(paso(_)),
         retractall(plaga(_))
     ).
@@ -246,7 +252,7 @@ regla(Respuesta):-
 regla(Respuesta):- 
     (paso('Comprobar Plaga'), plaga('Mosca blanca') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'Posible infestación de mosca blanca. Revisa el envés de las hojas.'],
+        Respuesta = ['RESPUESTA', 'La mosca blanca es una plaga común en invernaderos y puede transmitir enfermedades virales a las plantas. Controle la mosca blanca mediante la instalación de trampas amarillas adhesivas y la aplicación de productos como aceite de neem o extractos de ajo. También se pueden emplear parasitoides naturales como Encarsia formosa.'],
         retractall(paso(_)),
         retractall(plaga(_))
     ).
@@ -264,7 +270,7 @@ regla(Respuesta):-
 regla(Respuesta):- 
     (paso('Comprobar Clima'), clima('Calor') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'Las altas temperaturas favorecen la proliferación de plagas. Mantenga un control de humedad.'],
+        Respuesta = ['RESPUESTA', 'Las altas temperaturas pueden causar estrés térmico en las plantas reduciendo su rendimiento y calidad. Se recomienda:, Instalar mallas de sombreo para reducir la intensidad solar., Aumentar la frecuencia del riego para mantener una hidratación adecuada.,Utilizar mulching (cobertura del suelo) para conservar la humedad.'],
         retractall(paso(_)),
         retractall(clima(_))
     ).
@@ -272,7 +278,7 @@ regla(Respuesta):-
 regla(Respuesta):- 
     (paso('Comprobar Clima'), clima('Humedad Alta') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'La humedad alta puede favorecer la aparición de hongos.'],
+        Respuesta = ['RESPUESTA', 'La alta humedad favorece el desarrollo de enfermedades fúngicas como el mildiu y la botritis. Para mitigar sus efectos:, Mejore la ventilación del invernadero o del área de cultivo., Evite el riego por aspersión en las tardes o noches., Aplique fungicidas preventivos si las condiciones de humedad persisten.'],
         retractall(paso(_)),
         retractall(clima(_))
     ).
@@ -280,10 +286,10 @@ regla(Respuesta):-
 regla(Respuesta):- 
     (paso('Comprobar Clima'), clima('Sequía') -> 
         !, 
-        Respuesta = ['RESPUESTA', 'La sequía hace que aparezcan más ácaros y otras plagas que buscan plantas secas.'],
+        Respuesta = ['RESPUESTA', 'La sequía puede causar marchitez quemaduras en las hojas y disminución en el rendimiento del cultivo. Las recomendaciones incluyen:, Implementar sistemas de riego por goteo para un uso eficiente del agua., Utilizar variedades de tomate resistentes a la sequía., Mejorar la capacidad del suelo para retener agua mediante enmiendas orgánicas como compost o turba.'],
         retractall(paso(_)),
         retractall(clima(_))
-    ).
+    ).
 
 limpiar:-
     retractall(paso(_)),

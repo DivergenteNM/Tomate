@@ -20,6 +20,7 @@
         width: 100%;
         top: 0;
         z-index: 1000;
+        margin-bottom: 100px;
     }
     .mb-12 {
         margin-bottom: 3rem;
